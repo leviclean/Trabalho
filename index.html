@@ -584,10 +584,10 @@ body.pointer-active a:hover{transition:color .25s ease,transform .25s ease;}
 <style id="exact-hero-lines-in-cards">
 /* Reutiliza o mesmo sistema .path-lines da hero, sem variação de gradiente. */
 #experience .svc-card::before,#experience .svc-card::after{display:none!important;content:none!important}
-#experience .svc-card .card-hero-path-lines{position:absolute!important;inset:-22%!important;z-index:0!important;pointer-events:none!important;opacity:.62!important;overflow:hidden!important;transform:rotate(-9deg) scale(1.15)!important;will-change:transform,opacity!important;background:repeating-radial-gradient(ellipse at 18% 22%,transparent 0 42px,rgba(77,163,255,.2) 43px 44px,transparent 45px 86px)!important;mask-image:linear-gradient(90deg,transparent,black 12%,black 88%,transparent)!important;animation:cardPathDrift 7s linear infinite!important}
+#experience .svc-card .card-hero-path-lines{position:absolute!important;inset:-22%!important;z-index:0!important;pointer-events:none!important;opacity:.62!important;overflow:hidden!important;transform:rotate(-9deg) scale(1.15);will-change:transform,opacity!important;background:repeating-radial-gradient(ellipse at 18% 22%,transparent 0 42px,rgba(77,163,255,.2) 43px 44px,transparent 45px 86px)!important;mask-image:linear-gradient(90deg,transparent,black 12%,black 88%,transparent)!important;animation:cardPathDrift 7s linear infinite!important}
 #experience .svc-card .card-hero-path-lines::before,#experience .svc-card .card-hero-path-lines::after{content:''!important;display:block!important;position:absolute!important;inset:-35%!important;pointer-events:none!important;background:repeating-radial-gradient(ellipse at 72% 62%,transparent 0 58px,rgba(140,200,255,.14) 59px 60px,transparent 61px 118px)!important;mask-image:linear-gradient(180deg,transparent,black 14%,black 86%,transparent)!important;will-change:transform!important}
-#experience .svc-card .card-hero-path-lines::before{transform:rotate(18deg) translate3d(-2%,0,0)!important;animation:cardPathWaveA 9s ease-in-out infinite alternate!important}
-#experience .svc-card .card-hero-path-lines::after{background:repeating-linear-gradient(112deg,transparent 0 110px,rgba(77,163,255,.1) 111px 112px,transparent 113px 230px)!important;transform:translate3d(0,0,0) skewX(-12deg)!important;animation:cardPathWaveB 6s linear infinite!important}
+#experience .svc-card .card-hero-path-lines::before{transform:rotate(18deg) translate3d(-2%,0,0);animation:cardPathWaveA 9s ease-in-out infinite alternate!important}
+#experience .svc-card .card-hero-path-lines::after{background:repeating-linear-gradient(112deg,transparent 0 110px,rgba(77,163,255,.1) 111px 112px,transparent 113px 230px)!important;transform:translate3d(0,0,0) skewX(-12deg);animation:cardPathWaveB 6s linear infinite!important}
 @keyframes cardPathDrift{0%{transform:rotate(-9deg) scale(1.15) translate3d(-2%,1%,0)}50%{transform:rotate(-6deg) scale(1.2) translate3d(3%,-2%,0)}100%{transform:rotate(-9deg) scale(1.15) translate3d(-2%,1%,0)}}
 @keyframes cardPathWaveA{0%{transform:rotate(18deg) translate3d(-4%,-2%,0) scale(1)}50%{transform:rotate(22deg) translate3d(5%,3%,0) scale(1.06)}100%{transform:rotate(15deg) translate3d(-1%,6%,0) scale(1.02)}}
 @keyframes cardPathWaveB{0%{transform:translate3d(-8%,0,0) skewX(-12deg)}100%{transform:translate3d(8%,3%,0) skewX(-12deg)}}
@@ -610,12 +610,6 @@ body.pointer-active a:hover{transition:color .25s ease,transform .25s ease;}
  #experience .svc-card .card-hero-path-lines::after{animation:cardPathWaveB 4.8s linear infinite!important}
 }
 </style>
-
-<style id="force-card-lines-motion-style">
-#experience .svc-card .card-hero-path-lines{will-change:transform,background-position!important;animation:none!important}
-#experience .svc-card .card-hero-path-lines::before,#experience .svc-card .card-hero-path-lines::after{will-change:transform!important}
-</style>
-
 <style id="stacked-services-mobile-final">
 /* Versão final: cards empilhados, sem entrada lateral nem faixa horizontal. */
 #experience{overflow:hidden!important}
@@ -632,6 +626,16 @@ body.pointer-active a:hover{transition:color .25s ease,transform .25s ease;}
  #experience .svc-card.scroll-service-active{transform:translateX(0) translateY(0) scale(.96)!important}
  #experience .svc-card.scroll-service-past{transform:translateX(0) translateY(-22px) scale(.92)!important}
 }
+</style>
+
+<style id="vertical-exact-hero-lines">
+/* Base oficial desta versão: linhas idênticas às da hero dentro dos cards. */
+#experience .svc-card .card-hero-path-lines{animation:pathDrift 7s linear infinite!important}
+#experience .svc-card .card-hero-path-lines::before{animation:pathWaveA 9s ease-in-out infinite alternate!important}
+#experience .svc-card .card-hero-path-lines::after{animation:pathWaveB 6s linear infinite!important}
+#experience .svc-card .card-hero-path-lines{transform:rotate(-9deg) scale(1.15);}
+#experience .svc-card .card-hero-path-lines::before{transform:rotate(18deg) translate3d(-2%,0,0);}
+#experience .svc-card .card-hero-path-lines::after{transform:translate3d(0,0,0) skewX(-12deg);}
 </style>
 </head>
 <body>
@@ -696,11 +700,11 @@ Seu site não precisa apenas existir. Ele precisa trabalhar por você.
 <div class="head">
 </div>
 <div class="track" id="svcTrack">
-<a class="svc-card svc-link" href="https://wa.me/5582993717776?text=Quero%20falar%20sobre%20estrat%C3%A9gia%20com%20a%20Clean" target="_blank" rel="noopener" data-cursor="agendar"><span class="card-hero-path-lines" aria-hidden="true"></span><span class="idx">01</span><h3>Briefing &amp; estratégia</h3><p class="desc">Entendemos seu negócio, público e objetivo antes de desenhar qualquer tela.</p><span class="price">Conversar sobre isso ↗</span></a>
-<a class="svc-card svc-link" href="https://wa.me/5582993717776?text=Quero%20criar%20um%20site%20com%20a%20Clean" target="_blank" rel="noopener" data-cursor="agendar"><span class="card-hero-path-lines" aria-hidden="true"></span><span class="idx">02</span><h3>Site institucional</h3><p class="desc">Um site elegante, rápido e claro para apresentar sua empresa e gerar confiança.</p><span class="price">Conversar sobre isso ↗</span></a>
-<a class="svc-card svc-link" href="https://wa.me/5582993717776?text=Quero%20uma%20landing%20page%20com%20a%20Clean" target="_blank" rel="noopener" data-cursor="agendar"><span class="card-hero-path-lines" aria-hidden="true"></span><span class="idx">03</span><h3>Landing page</h3><p class="desc">Uma página focada em conversão para campanhas, serviços e lançamentos.</p><span class="price">Conversar sobre isso ↗</span></a>
-<a class="svc-card svc-link" href="https://wa.me/5582993717776?text=Quero%20melhorar%20minha%20marca%20com%20a%20Clean" target="_blank" rel="noopener" data-cursor="agendar"><span class="card-hero-path-lines" aria-hidden="true"></span><span class="idx">04</span><h3>Identidade digital</h3><p class="desc">Direção visual, textos e experiência para sua marca ocupar seu espaço online.</p><span class="price">Conversar sobre isso ↗</span></a>
-<a class="svc-card svc-link" href="https://wa.me/5582993717776?text=Quero%20suporte%20para%20meu%20site%20com%20a%20Clean" target="_blank" rel="noopener" data-cursor="agendar"><span class="card-hero-path-lines" aria-hidden="true"></span><span class="idx">05</span><h3>Manutenção &amp; evolução</h3><p class="desc">Acompanhamento para manter seu site atualizado, seguro e sempre performando.</p><span class="price">Conversar sobre isso ↗</span></a>
+<a class="svc-card svc-link" href="https://wa.me/5582993717776?text=Quero%20falar%20sobre%20estrat%C3%A9gia%20com%20a%20Clean" target="_blank" rel="noopener" data-cursor="agendar"><span class="path-lines card-hero-path-lines" aria-hidden="true"></span><span class="idx">01</span><h3>Briefing &amp; estratégia</h3><p class="desc">Entendemos seu negócio, público e objetivo antes de desenhar qualquer tela.</p><span class="price">Conversar sobre isso ↗</span></a>
+<a class="svc-card svc-link" href="https://wa.me/5582993717776?text=Quero%20criar%20um%20site%20com%20a%20Clean" target="_blank" rel="noopener" data-cursor="agendar"><span class="path-lines card-hero-path-lines" aria-hidden="true"></span><span class="idx">02</span><h3>Site institucional</h3><p class="desc">Um site elegante, rápido e claro para apresentar sua empresa e gerar confiança.</p><span class="price">Conversar sobre isso ↗</span></a>
+<a class="svc-card svc-link" href="https://wa.me/5582993717776?text=Quero%20uma%20landing%20page%20com%20a%20Clean" target="_blank" rel="noopener" data-cursor="agendar"><span class="path-lines card-hero-path-lines" aria-hidden="true"></span><span class="idx">03</span><h3>Landing page</h3><p class="desc">Uma página focada em conversão para campanhas, serviços e lançamentos.</p><span class="price">Conversar sobre isso ↗</span></a>
+<a class="svc-card svc-link" href="https://wa.me/5582993717776?text=Quero%20melhorar%20minha%20marca%20com%20a%20Clean" target="_blank" rel="noopener" data-cursor="agendar"><span class="path-lines card-hero-path-lines" aria-hidden="true"></span><span class="idx">04</span><h3>Identidade digital</h3><p class="desc">Direção visual, textos e experiência para sua marca ocupar seu espaço online.</p><span class="price">Conversar sobre isso ↗</span></a>
+<a class="svc-card svc-link" href="https://wa.me/5582993717776?text=Quero%20suporte%20para%20meu%20site%20com%20a%20Clean" target="_blank" rel="noopener" data-cursor="agendar"><span class="path-lines card-hero-path-lines" aria-hidden="true"></span><span class="idx">05</span><h3>Manutenção &amp; evolução</h3><p class="desc">Acompanhamento para manter seu site atualizado, seguro e sempre performando.</p><span class="price">Conversar sobre isso ↗</span></a>
 </div>
 </div>
 </section>
@@ -1035,27 +1039,6 @@ el.style.opacity = 1; el.style.transform = 'none';
 
 <script id="card-network-hover-reaction">
 (function(){var cards=[].slice.call(document.querySelectorAll('#svcTrack .svc-card'));if(!cards.length||!matchMedia('(pointer:fine)').matches)return;cards.forEach(function(card){card.addEventListener('pointerenter',function(){card.classList.add('card-network-hover')});card.addEventListener('pointermove',function(e){var r=card.getBoundingClientRect(),x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2;card.style.setProperty('--mx',(x*.07).toFixed(2)+'px');card.style.setProperty('--my',(y*.07).toFixed(2)+'px');card.style.setProperty('--tilt',(x/r.width*5).toFixed(2)+'deg')},{passive:true});card.addEventListener('pointerleave',function(){card.classList.remove('card-network-hover');card.style.setProperty('--mx','0px');card.style.setProperty('--my','0px');card.style.setProperty('--tilt','0deg')})});})();
-</script>
-
-<script id="force-card-lines-motion">
-(function(){
- var layers=[].slice.call(document.querySelectorAll('.card-hero-path-lines'));if(!layers.length)return;
- var start=performance.now();
- function frame(now){
-   var t=(now-start)/1000;
-   layers.forEach(function(el,i){
-     var a=t*(.42+i*.035)+i*.8;
-     var x=Math.sin(a)*2.8+Math.sin(a*.43+i)*1.5;
-     var y=Math.cos(a*.76+i)*2.2+Math.sin(a*.31)*1.1;
-     var rot=-9+Math.sin(a*.28+i)*2.2;
-     var scale=1.15+Math.sin(a*.21+i)*.035;
-     el.style.transform='rotate('+rot+'deg) translate3d('+x+'%,'+y+'%,0) scale('+scale+')';
-     el.style.backgroundPosition=(50+x*2)+'% '+(50+y*2)+'%, 50% 50%';
-   });
-   requestAnimationFrame(frame);
- }
- if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)requestAnimationFrame(frame);
-})();
 </script>
 </body>
 </html>
