@@ -391,6 +391,20 @@ body.pointer-active a:hover{transition:color .25s ease,transform .25s ease;}
     padding:6px 0;
   }
 }
+/* ---------------- CLEAN MOBILE STABILITY PATCH ---------------- */
+@media (pointer: coarse), (max-width: 880px){
+  #networkReact{display:none!important}
+  .pl-panel{will-change:auto!important}
+  .stage,.section,.statement{transform:none!important}
+}
+
+/* ---------- MOBILE SAFE ANIMATED PATH LINES ---------- */
+@media (pointer: coarse), (max-width: 880px){
+  #hero .path-lines{display:block!important;opacity:.52!important;animation:pathDrift 7s linear infinite!important;will-change:transform!important}
+  #hero .path-lines::before{display:block!important;animation:pathWaveA 9s ease-in-out infinite alternate!important;will-change:transform!important}
+  #hero .path-lines::after{display:block!important;animation:pathWaveB 6s linear infinite!important;will-change:transform!important}
+  #networkReact{display:none!important}
+}
 </style>
 
 <style id="published-statement-stack">
@@ -637,6 +651,37 @@ body.pointer-active a:hover{transition:color .25s ease,transform .25s ease;}
 #experience .svc-card .card-hero-path-lines::before{transform:rotate(18deg) translate3d(-2%,0,0);}
 #experience .svc-card .card-hero-path-lines::after{transform:translate3d(0,0,0) skewX(-12deg);}
 </style>
+
+<style id="vertical-statement-mobile-sticky-final">
+/* Mobile: a frase fica presa no enquadramento enquanto a próxima seção sobe. */
+@media(max-width:880px){
+ html,body{overflow-x:hidden!important;overflow-y:visible!important}
+ #statement{height:150svh!important;min-height:150svh!important;display:block!important;position:relative!important;overflow:visible!important;z-index:3!important;background:#070A0D!important}
+ #statement .pin{position:sticky!important;top:0!important;height:100svh!important;min-height:100svh!important;display:grid!important;place-items:center!important;overflow:hidden!important;z-index:4!important;background:radial-gradient(circle at 50% 46%,rgba(77,163,255,.055),transparent 38%),#070A0D!important}
+ #statementText{position:relative!important;z-index:5!important;max-width:calc(100% - 40px)!important}
+ #value{position:relative!important;z-index:5!important;margin-top:0!important;background:#070A0D!important}
+}
+</style>
+
+<style id="mobile-statement-overlap-final">
+/* Mobile: a seção seguinte sobe visualmente sobre a frase parada. */
+@media(max-width:880px){
+ #statement{height:180svh!important;min-height:180svh!important;position:relative!important;overflow:visible!important;z-index:2!important}
+ #statement .pin{position:sticky!important;top:0!important;height:100svh!important;min-height:100svh!important;z-index:2!important;overflow:hidden!important}
+ #value{position:relative!important;z-index:20!important;margin-top:-100svh!important;padding-top:calc(100px + 100svh)!important;background:#070A0D!important;isolation:isolate!important}
+ #value::before{content:'';position:absolute;left:0;right:0;top:0;height:120px;transform:translateY(-1px);background:linear-gradient(180deg,rgba(7,10,13,0),#070A0D 85%);pointer-events:none;z-index:-1}
+}
+</style>
+
+<style id="statement-mobile-rise-final">
+/* Mobile final: a frase permanece enquanto o conteúdo seguinte sobe por cima. */
+@media (max-width:880px){
+  #statement{height:145svh!important;min-height:145svh!important;position:relative!important;overflow:visible!important;z-index:2!important}
+  #statement .pin{position:sticky!important;top:0!important;height:100svh!important;min-height:100svh!important;display:grid!important;place-items:center!important;overflow:hidden!important;z-index:2!important}
+  #value{position:relative!important;z-index:20!important;margin-top:-55svh!important;padding-top:72px!important;background:#070A0D!important;isolation:isolate!important;transform:translateZ(0)!important}
+  #value::before{content:'';position:absolute;left:0;right:0;top:0;height:96px;background:linear-gradient(180deg,rgba(7,10,13,0),#070A0D 82%);pointer-events:none;z-index:-1}
+}
+</style>
 </head>
 <body>
 <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden"><defs><filter id="cardNetworkWarp" x="-25%" y="-25%" width="150%" height="150%"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.035" numOctaves="2" seed="8" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="18" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
@@ -755,13 +800,13 @@ Seu site não precisa apenas existir. Ele precisa trabalhar por você.
 var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var isTouch = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 880;
 if(isTouch){ document.body.classList.add('no-custom-cursor'); }
-var gsapReady = (typeof window.gsap !== 'undefined');
+var gsapReady = (typeof window.gsap !== 'undefined') && !isTouch;
 if(gsapReady && window.ScrollTrigger){ gsap.registerPlugin(ScrollTrigger); } else { gsapReady = false; }
 
 /* ---------------- MOUSE-REACTIVE HERO NETWORK ---------------- */
 (function(){
 var canvas=document.getElementById('networkReact'), hero=document.getElementById('hero');
-if(!canvas || !hero || reduced) return;
+if(!canvas || !hero || reduced || isTouch) return;
 var ctx=canvas.getContext('2d'), points=[], mouse={x:-9999,y:-9999,tx:-9999,ty:-9999}, dpr=Math.min(devicePixelRatio||1,2);
 function resize(){
 var r=canvas.getBoundingClientRect(); canvas.width=r.width*dpr; canvas.height=r.height*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); points=[];
@@ -1010,7 +1055,7 @@ requestAnimationFrame(loop);
 })();
 }
 
-window.addEventListener('load', function(){ ScrollTrigger.refresh(); });
+window.addEventListener('load', function(){ if(gsapReady && window.ScrollTrigger) ScrollTrigger.refresh(); });
 }catch(err){
 /* if anything above throws, make sure content is visible */
 document.querySelectorAll('#hero h1 span, #hero .sub span, .sc-copy, .quote, #statementText .w').forEach(function(el){
