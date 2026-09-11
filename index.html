@@ -417,7 +417,6 @@ body.pointer-active a:hover{transition:color .25s ease,transform .25s ease;}
 #value{position:relative!important;z-index:2!important;margin-top:0!important;padding-top:clamp(110px,14vh,190px)!important;background:#070A0D!important;box-shadow:none!important}
 @media(max-width:880px){#statement{height:140svh!important;min-height:140svh!important}#statement .pin{height:100svh!important}#value{margin-top:0!important;padding-top:100px!important}}
 @media(prefers-reduced-motion:reduce){#statement{height:100svh!important;min-height:100svh!important}.statement .pin{position:relative!important}}
-<style id="compact-static-digital">
 /* Menos vazio vertical e estrutura editorial estática. */
 #statement{min-height:104vh!important}
 #statement .pin{height:74vh!important}
@@ -571,6 +570,15 @@ body.pointer-active a:hover{transition:color .25s ease,transform .25s ease;}
 @media(max-width:880px){#experience .svc-card:nth-child(odd){transform:translateX(58px) translateY(34px) scale(.92)!important}#experience .svc-card:nth-child(even){transform:translateX(-58px) translateY(34px) scale(.92)!important}}
 @media(prefers-reduced-motion:reduce){#experience .svc-card::before,#experience .svc-card::after{animation:none!important}#experience .svc-card:nth-child(odd),#experience .svc-card:nth-child(even){transform:none!important}}
 </style>
+<style id="mobile-performance-safe">
+@media (pointer:coarse), (max-width:880px){
+  body{cursor:auto!important}
+  .cur,#pointerGlow,#cleanPointer{display:none!important}
+  .grain{display:none!important}
+  #preloader,.pl-panel{display:none!important}
+  #hero .network-react{display:none!important}
+}
+</style>
 
 <style id="cards-hero-lines">
 /* Mesma malha ondulada da hero, adaptada para preencher cada card. */
@@ -652,33 +660,20 @@ body.pointer-active a:hover{transition:color .25s ease,transform .25s ease;}
 #experience .svc-card .card-hero-path-lines::after{transform:translate3d(0,0,0) skewX(-12deg);}
 </style>
 
-<style id="vertical-statement-mobile-sticky-final">
-/* Mobile: a frase fica presa no enquadramento enquanto a próxima seção sobe. */
-@media(max-width:880px){
- html,body{overflow-x:hidden!important;overflow-y:visible!important}
- #statement{height:150svh!important;min-height:150svh!important;display:block!important;position:relative!important;overflow:visible!important;z-index:3!important;background:#070A0D!important}
- #statement .pin{position:sticky!important;top:0!important;height:100svh!important;min-height:100svh!important;display:grid!important;place-items:center!important;overflow:hidden!important;z-index:4!important;background:radial-gradient(circle at 50% 46%,rgba(77,163,255,.055),transparent 38%),#070A0D!important}
- #statementText{position:relative!important;z-index:5!important;max-width:calc(100% - 40px)!important}
- #value{position:relative!important;z-index:5!important;margin-top:0!important;background:#070A0D!important}
-}
-</style>
-
-<style id="mobile-statement-overlap-final">
-/* Mobile: a seção seguinte sobe visualmente sobre a frase parada. */
-@media(max-width:880px){
- #statement{height:180svh!important;min-height:180svh!important;position:relative!important;overflow:visible!important;z-index:2!important}
- #statement .pin{position:sticky!important;top:0!important;height:100svh!important;min-height:100svh!important;z-index:2!important;overflow:hidden!important}
- #value{position:relative!important;z-index:20!important;margin-top:-100svh!important;padding-top:calc(100px + 100svh)!important;background:#070A0D!important;isolation:isolate!important}
- #value::before{content:'';position:absolute;left:0;right:0;top:0;height:120px;transform:translateY(-1px);background:linear-gradient(180deg,rgba(7,10,13,0),#070A0D 85%);pointer-events:none;z-index:-1}
-}
-</style>
-
-<style id="statement-mobile-rise-final">
-/* Mobile final: a frase permanece enquanto o conteúdo seguinte sobe por cima. */
+<style id="clean-mobile-statement-authoritative">
+/* Mobile: waves remain behind the statement while the next section rises over it. */
 @media (max-width:880px){
-  #statement{height:145svh!important;min-height:145svh!important;position:relative!important;overflow:visible!important;z-index:2!important}
-  #statement .pin{position:sticky!important;top:0!important;height:100svh!important;min-height:100svh!important;display:grid!important;place-items:center!important;overflow:hidden!important;z-index:2!important}
-  #value{position:relative!important;z-index:20!important;margin-top:-55svh!important;padding-top:72px!important;background:#070A0D!important;isolation:isolate!important;transform:translateZ(0)!important}
+  #hero{position:relative!important;z-index:3!important;overflow:visible!important}
+  #hero .layer-bg{overflow:hidden!important}
+  #hero .path-lines{display:block!important;z-index:1!important;opacity:.52!important;height:calc(100% + 100svh)!important;min-height:calc(100% + 640px)!important;animation:pathDrift 7s linear infinite!important}
+  #hero .path-lines::before{display:block!important;animation:pathWaveA 9s ease-in-out infinite alternate!important}
+  #hero .path-lines::after{display:block!important;animation:pathWaveB 6s linear infinite!important}
+  #statement{height:200svh!important;min-height:200svh!important;display:block!important;position:relative!important;overflow:visible!important;z-index:4!important;background:transparent!important}
+  #statement .pin{position:sticky!important;top:0!important;height:100svh!important;min-height:100svh!important;display:grid!important;place-items:center!important;overflow:hidden!important;z-index:5!important;background:linear-gradient(180deg,rgba(7,10,13,.08) 0%,rgba(7,10,13,.16) 58%,#070A0D 100%)!important}
+  #statement .pin::before{content:''!important;position:absolute!important;inset:-38%!important;z-index:0!important;pointer-events:none!important;opacity:.46!important;background:repeating-radial-gradient(ellipse at 18% 22%,transparent 0 42px,rgba(77,163,255,.2) 43px 44px,transparent 45px 86px)!important;mask-image:linear-gradient(90deg,transparent,black 18%,black 82%,transparent)!important;transform:rotate(-9deg) scale(1.15)!important;animation:pathDrift 7s linear infinite!important}
+  #statement .pin::after{content:''!important;position:absolute!important;inset:-42%!important;z-index:0!important;pointer-events:none!important;opacity:.30!important;background:repeating-radial-gradient(ellipse at 72% 62%,transparent 0 58px,rgba(140,200,255,.14) 59px 60px,transparent 61px 118px),repeating-linear-gradient(112deg,transparent 0 110px,rgba(77,163,255,.1) 111px 112px,transparent 113px 230px)!important;mask-image:linear-gradient(180deg,transparent,black 12%,black 88%,transparent)!important;transform:rotate(18deg)!important;animation:pathWaveA 9s ease-in-out infinite alternate!important}
+  #statementText{position:relative!important;z-index:6!important;max-width:calc(100% - 40px)!important;text-shadow:0 0 28px rgba(7,10,13,.78)!important}
+  #value{position:relative!important;z-index:20!important;margin-top:-100svh!important;padding-top:72px!important;background:#070A0D!important;isolation:isolate!important;transform:translateZ(0)!important}
   #value::before{content:'';position:absolute;left:0;right:0;top:0;height:96px;background:linear-gradient(180deg,rgba(7,10,13,0),#070A0D 82%);pointer-events:none;z-index:-1}
 }
 </style>
@@ -792,8 +787,8 @@ Seu site não precisa apenas existir. Ele precisa trabalhar por você.
 </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
 (function(){
 "use strict";
@@ -914,7 +909,7 @@ preloader.style.display = 'none';
 panels.forEach(function(p){p.style.display='none';});
 }
 }
-if(reduced){
+if(reduced || isTouch){
 preloader.style.display='none';
 panels.forEach(function(p){p.style.display='none';});
 } else {
@@ -1066,7 +1061,7 @@ el.style.opacity = 1; el.style.transform = 'none';
 </script>
 
 <script id="mobile-preloader-fallback">
-(function(){if(innerWidth>880)return;function release(){var pre=document.getElementById('preloader');if(pre){pre.style.display='none';pre.setAttribute('aria-hidden','true')}document.querySelectorAll('.pl-panel').forEach(function(panel){panel.style.display='none'});document.documentElement.classList.add('mobile-ready');}addEventListener('load',function(){setTimeout(release,900)});setTimeout(release,2600);})();
+(function(){if(innerWidth>880 || window.matchMedia('(pointer: coarse)').matches)return;function release(){var pre=document.getElementById('preloader');if(pre){pre.style.display='none';pre.setAttribute('aria-hidden','true')}document.querySelectorAll('.pl-panel').forEach(function(panel){panel.style.display='none'});document.documentElement.classList.add('mobile-ready');}addEventListener('load',function(){setTimeout(release,900)});setTimeout(release,2600);})();
 </script>
 
 <script id="approved-cursor-script">
