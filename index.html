@@ -717,6 +717,11 @@ renderer.toneMappingExposure = 1.0;
 
 // Post-processing
 const isLowPower = window.matchMedia("(max-width:800px),(pointer:coarse)").matches;
+// Mobile framing: keep the complete ring inside narrow viewports.
+if (isLowPower) {
+  scrollGroup.scale.setScalar(0.76);
+  camera.position.z = 8.6;
+}
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 
