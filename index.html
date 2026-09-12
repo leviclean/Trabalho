@@ -815,6 +815,17 @@ const clock = new THREE.Clock();
 let lastTime = 0;
 const hover = { point: new THREE.Vector3(), active: 0 };
 const _localHover = new THREE.Vector3();
+// Touch scroll state is interpolated in the render loop to prevent snap/teleport artifacts.
+let mobileScrollTarget = 0;
+let mobileScroll = 0;
+if (isLowPower) {
+  const updateMobileScroll = () => {
+    const travel = Math.max(window.innerHeight * 3.0, 1);
+    mobileScrollTarget = THREE.MathUtils.clamp(window.scrollY / travel, 0, 1);
+  };
+  window.addEventListener("scroll", updateMobileScroll, { passive: true });
+  updateMobileScroll();
+}
 
 function smoothstep(min, max, v) {
   const t = Math.max(0, Math.min(1, (v - min) / (max - min)));
@@ -837,6 +848,30 @@ const tick = () => {
     hover.active = Math.max(hover.active - delta * 2.5, 0);
   }
 
+  if (isLowPower) {
+    mobileScroll = THREE.MathUtils.lerp(mobileScroll, mobileScrollTarget, Math.min(delta * 6.5, 1));
+    // Same two-stage motion as desktop, with reduced lateral amplitude for narrow screens.
+    const travel = mobileScroll * 2;
+    const stage = Math.min(1, travel);
+    const local = travel <= 1 ? travel : travel - 1;
+    const ease = v => v * v * (3 - 2 * v);
+    const e = ease(local);
+    const startX = 0;
+    const midX = -0.72;
+    const endX = 0.72;
+    scrollGroup.position.x = travel <= 1
+      ? THREE.MathUtils.lerp(startX, midX, e)
+      : THREE.MathUtils.lerp(midX, endX, e);
+    scrollGroup.rotation.x = travel <= 1
+      ? THREE.MathUtils.lerp(0.15, Math.PI * 0.5, e)
+      : THREE.MathUtils.lerp(Math.PI * 0.5, -Math.PI * 0.5, e);
+    scrollGroup.rotation.y = travel <= 1
+      ? THREE.MathUtils.lerp(0, -Math.PI * 0.6, e)
+      : THREE.MathUtils.lerp(-Math.PI * 0.6, Math.PI * 0.6, e);
+    scrollGroup.rotation.z = travel <= 1
+      ? THREE.MathUtils.lerp(0, Math.PI * 0.25, e)
+      : THREE.MathUtils.lerp(Math.PI * 0.25, -Math.PI * 0.25, e);
+  }
   for (const frag of fragments) {
     const { cellCenter, cellNormal, rotAxis, maxAngle } = frag.userData;
     let target = 0;
