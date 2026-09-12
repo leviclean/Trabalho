@@ -531,6 +531,17 @@ body>nav{display:none!important}
 /* Hero alignment reference: CLEAN shares the exact vertical center of the blue sidebar tick. */
 #section-1 .hero-top{top:0;bottom:0;transform:none}
 #section-1 .hero-title{top:0;bottom:0;margin-top:0;margin-bottom:0}
+
+/* Mobile stability: no lateral HUD traces and no layout-driven title drift. */
+@media(max-width:800px),(pointer:coarse){
+  .sidebar,.hud-corner{display:none!important}
+  #section-1 .hero-top{inset:0;display:flex;align-items:center;justify-content:center;transform:none}
+  #section-1 .hero-title{position:relative;top:auto;bottom:auto;left:auto;right:auto;width:max-content;max-width:92vw;margin:0;text-align:center}
+  .webgl{touch-action:none}
+}
+
+/* No decorative blue tick: keep the Fracture Ring composition clean. */
+.sidebar{display:none!important}
 </style><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.module.js","jsm/":"https://cdn.jsdelivr.net/npm/three@0.182.0/examples/jsm/"}}</script></head><body>
 <canvas class="webgl"></canvas>
 <div class="scanlines"></div>
@@ -984,7 +995,7 @@ const idleTween = gsap.to(torusGroup.rotation, {
 });
 gsap.delayedCall(2.5, () => idleTween.play());
 
-const scrollTl = gsap.timeline({
+const scrollTl = gsap.timeline(isLowPower ? { paused: true } : {
   scrollTrigger: {
     trigger: "body",
     start: "top top",
@@ -1016,17 +1027,19 @@ window.addEventListener("resize", () => {
   gsap.timeline({ delay: 0.2 })
     .to(".hero-title", { opacity: 0.58, y: 0, scale: 1, duration: 1.35, ease: "power3.out" });
   const cleanHeroTitle = document.querySelector("#section-1 .hero-title");
-  gsap.to(cleanHeroTitle, {
-    y: -42, scaleX: 1.04, scaleY: 0.95, ease: "none",
-    scrollTrigger: {
-      trigger: "#section-1", start: "top top", end: "65% top", scrub: 1.2,
-      invalidateOnRefresh: true,
-      onUpdate: self => {
-        const p = self.progress;
-        gsap.set(cleanHeroTitle, { opacity: 0.58 - (0.545 * p) });
+  if (!isLowPower) {
+    gsap.to(cleanHeroTitle, {
+      y: -42, scaleX: 1.04, scaleY: 0.95, ease: "none",
+      scrollTrigger: {
+        trigger: "#section-1", start: "top top", end: "65% top", scrub: 1.2,
+        invalidateOnRefresh: true,
+        onUpdate: self => {
+          const p = self.progress;
+          gsap.set(cleanHeroTitle, { opacity: 0.58 - (0.545 * p) });
+        }
       }
-    }
-  });
+    });
+  }
   // Hero entrance: the Fracture Ring scene must not hide the brand message.
   gsap.timeline({ delay: 0.25 })
     .to(".hero-title", { opacity: 0.58, y: 0, duration: 1.1, ease: "power3.out" })
