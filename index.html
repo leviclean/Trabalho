@@ -527,6 +527,10 @@ nav {
 body>nav{display:none!important}
 #section-1 .hero-top{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0;transform:translateY(0)}
 #section-1 .hero-title{display:block;width:100%;max-width:none;text-align:center;margin:0 auto;left:0;right:0}
+
+/* Hero alignment reference: CLEAN shares the exact vertical center of the blue sidebar tick. */
+#section-1 .hero-top{top:0;bottom:0;transform:none}
+#section-1 .hero-title{top:0;bottom:0;margin-top:0;margin-bottom:0}
 </style><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.module.js","jsm/":"https://cdn.jsdelivr.net/npm/three@0.182.0/examples/jsm/"}}</script></head><body>
 <canvas class="webgl"></canvas>
 <div class="scanlines"></div>
@@ -685,7 +689,6 @@ body>nav{display:none!important}
 
 <script type="module">import * as THREE from "three";
 import { OrbitControls } from "jsm/controls/OrbitControls.js";
-import { GUI } from "jsm/libs/lil-gui.module.min.js";
 import { EffectComposer } from "jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "jsm/postprocessing/UnrealBloomPass.js";
@@ -908,6 +911,8 @@ const fragments = (() => {
   return list;
 })();
 
+// Fragment interaction parameters (kept independent from the removed debug GUI).
+const fragParams = { hoverRadius: 0.75, liftDist: 0.28, liftSpeedUp: 0.15, liftSpeedDown: 0.06 };
 // Invisible raycaster mesh
 const rcMesh = new THREE.Mesh(
   new THREE.TorusGeometry(TORUS_R, TORUS_r, 54, 54),
@@ -922,28 +927,6 @@ window.addEventListener("mousemove", (e) => {
   mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 });
 
-// GUI
-const gui = new GUI({ title: "Clean System" });
-
-const bloomFolder = gui.addFolder("Bloom");
-bloomFolder.add(bloomPass, "strength", 0, 3, 0.01);
-bloomFolder.add(bloomPass, "radius", 0, 1, 0.01);
-bloomFolder.add(bloomPass, "threshold", 0, 1, 0.01);
-
-const lightsFolder = gui.addFolder("Lights");
-lightsFolder.add(scene.children.find(c => c.isAmbientLight), "intensity", 0, 2, 0.01).name("ambient");
-lightsFolder.add(dirLight, "intensity", 0, 6, 0.1).name("key light");
-lightsFolder.add(fillLight, "intensity", 0, 3, 0.1).name("fill light");
-
-const fragParams = { hoverRadius: 0.75, liftDist: 0.28, liftSpeedUp: 0.15, liftSpeedDown: 0.06 };
-const fragFolder = gui.addFolder("Fragments");
-fragFolder.add(fragParams, "hoverRadius", 0.2, 1.5, 0.01).name("hover radius");
-fragFolder.add(fragParams, "liftDist", 0, 1, 0.01).name("lift distance");
-fragFolder.add(fragParams, "liftSpeedUp", 0.01, 0.5, 0.01).name("speed up");
-fragFolder.add(fragParams, "liftSpeedDown", 0.01, 0.3, 0.01).name("speed down");
-
-gui.addFolder("Renderer").add(renderer, "toneMappingExposure", 0, 3, 0.01).name("exposure");
-gui.close();
 
 // Tick
 const clock = new THREE.Clock();
@@ -995,8 +978,6 @@ tick();
 // GSAP scroll animations
 gsap.set(scrollGroup.position, { x: 0, y: 0, z: 0 });
 gsap.set(scrollGroup.rotation, { x: 0.15, y: 0, z: 0 });
-gsap.from(scrollGroup.rotation, { y: Math.PI, duration: 2.4, ease: "power3.out" });
-gsap.from(scrollGroup.position, { y: -2, duration: 2.4, ease: "power3.out" });
 
 const idleTween = gsap.to(torusGroup.rotation, {
   y: Math.PI * 2, duration: 22, ease: "none", repeat: -1, paused: true,
